@@ -39,6 +39,7 @@ partido_df = partido_df.groupby('Coligação').sum()
 
 # calculate the QP of each partido
 partido_df['QP'] = partido_df['Votos'] // real_qe
+partido_df = partido_df[partido_df['QP'] > 0].dropna(subset=['QP'])
 
 # get the number of used positions
 used_pos = partido_df['QP'].sum()
