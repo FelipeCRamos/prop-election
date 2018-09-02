@@ -40,8 +40,12 @@ partido_df = partido_df.groupby('Coligação').sum()
 # calculate the QP of each partido
 partido_df['QP'] = partido_df['Votos'] // real_qe
 
+print("-"*50+" DEBUG INICIAL")
+print(partido_df)
+
 # get the number of used positions
 used_pos = partido_df['QP'].sum()
+print("Used positions = {}".format(used_pos))
 
 # create the 'vagas_recebidas' label
 partido_df['vagas_recebidas'] = 0
@@ -51,6 +55,8 @@ aval_pos -= used_pos
 for i in list(range(0, int(aval_pos))):
     partido_df['Media'] = partido_df['Votos'] / (partido_df['QP'] + partido_df['vagas_recebidas'] + 1)
     partido_df.sort_values(by='Media', ascending=False, inplace=True)
+    print("="*50+"Debug FOR {}".format(i))
+    print(partido_df)
     partido_df['vagas_recebidas'][0] += 1
 
 # sort by the available positions
@@ -66,6 +72,7 @@ for index in partido_df.index:
     ldf = df[df['Coligação'] == index]
     ldf.sort_values(by='Votos', ascending=False, inplace=True)
     if( int(available_positions) > 0 ):
+        # append [0:available_positions] from the ldf dataframe
         eleitos.append(ldf[0:int(available_positions)])
 
 # generate the results
